@@ -9,16 +9,39 @@
 <div class="container">
     <h1>Google Maps API</h1>
     {% for directions in directions_result %}
-    <h5>Warnings</h5>
-    <h6>{{ directions.warnings.0 }}</h6>
-    <h4>Northeast</h4>
-    <h6>Latitude: {{ directions.bounds.northeast.lat }}</h6>
-    <h6>Longitude: {{ directions.bounds.northeast.lng }}</h6>
-    <h5>Southwest</h5>
-    <h6>Latitude: {{ directions.bounds.southwest.lat }}</h6>
-    <h6>Longitude: {{ directions.bounds.southwest.lng }}</h6>
-    <h5>Legs Of Trip</h5>
-    <h6>{{ directions.legs }}</h6>
+    <h5>Trip Details</h5>
+    <h6>Start Address: {{ directions.legs.0.start_address }}</h6>
+    <h6>End Address: {{ directions.legs.0.end_address }}</h6>
+    <h6>Arrival Time: {{ directions.legs.0.arrival_time.text }}</h6>
+    <h6>Step 1: {{ directions.legs.0.steps.0.html_instructions }}</h6>
+    <h6>Distance: {{ directions.legs.0.steps.0.distance.text }}</h6>
+    <h6>Duration: {{ directions.legs.0.steps.0.duration.text }}</h6>
+    <h6>Travel Mode: {{ directions.legs.0.steps.0.travel_mode.title }}</h6>
+    <hr>
+    <h6>Step 2: {{ directions.legs.0.steps.1.html_instructions }}</h6>
+    <h6>Distance: {{ directions.legs.0.steps.1.distance.text }}</h6>
+    <h6>Duration: {{ directions.legs.0.steps.1.duration.text }}</h6>
+    <h6>Travel Mode: {{ directions.legs.0.steps.1.travel_mode.title }}</h6>
+    <hr>
+    <h6>Step 3: {{ directions.legs.0.steps.2.html_instructions }}</h6>
+    <h6>Distance: {{ directions.legs.0.steps.2.distance.text }}</h6>
+    <h6>Duration: {{ directions.legs.0.steps.2.duration.text }}</h6>
+    <h6>Travel Mode: {{ directions.legs.0.steps.2.travel_mode.title }}</h6>
+    <hr>
+    <h6>Step 4: {{ directions.legs.0.steps.3.html_instructions }}</h6>
+    <h6>Distance: {{ directions.legs.0.steps.3.distance.text }}</h6>
+    <h6>Duration: {{ directions.legs.0.steps.3.duration.text }}</h6>
+    <h6>Travel Mode: {{ directions.legs.0.steps.3.travel_mode.title }}</h6>
+    <hr>
+    <h6>Step 5: {{ directions.legs.0.steps.4.html_instructions }}</h6>
+    <h6>Distance: {{ directions.legs.0.steps.4.distance.text }}</h6>
+    <h6>Duration: {{ directions.legs.0.steps.4.duration.text }}</h6>
+    <h6>Travel Mode: {{ directions.legs.0.steps.4.travel_mode.title }}</h6>
+    <hr>
+    <h6>Step 6: {{ directions.legs.0.steps.5.html_instructions }}</h6>
+    <h6>Distance: {{ directions.legs.0.steps.5.distance.text }}</h6>
+    <h6>Duration: {{ directions.legs.0.steps.5.duration.text }}</h6>
+    <h6>Travel Mode: {{ directions.legs.0.steps.5.travel_mode.title }}</h6>
     {% endfor %}
     <h6>{{ directions_result }}</h6>
 </div>

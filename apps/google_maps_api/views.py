@@ -14,7 +14,7 @@ def index(request):
     now = datetime.now()
     directions_result = gmaps.directions("Sydney Town Hall",
                                      "Parramatta, NSW",
-                                     mode="transit",
+                                     mode="driving",
                                      departure_time=now)
     print(now)
     print(directions_result)
