@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Home</title>
+{% endblock%}
+
+
+{% block content %}
+<div class="container">
+    <h1>Google Maps API</h1>
+    {% for directions in directions_result %}
+    <h5>Warnings</h5>
+    <h6>{{ directions.warnings.0 }}</h6>
+    <h4>Northeast</h4>
+    <h6>Latitude: {{ directions.bounds.northeast.lat }}</h6>
+    <h6>Longitude: {{ directions.bounds.northeast.lng }}</h6>
+    <h5>Southwest</h5>
+    <h6>Latitude: {{ directions.bounds.southwest.lat }}</h6>
+    <h6>Longitude: {{ directions.bounds.southwest.lng }}</h6>
+    <h5>Legs Of Trip</h5>
+    <h6>{{ directions.legs }}</h6>
+    {% endfor %}
+    <h6>{{ directions_result }}</h6>
+</div>
+{% endblock %}
