@@ -9,6 +9,10 @@ from api_key import api_key
 # Create your views here.
 
 def index(request):
+    starting_address = request.session['starting_address']
+    print("Starting Address: " + str(starting_address))
+    ending_address = request.session['ending_address']
+    print("Ending Address: " + str(ending_address))
     key = api_key['api_key']
     gmaps = googlemaps.Client(key=key)
     # Geocoding an address
@@ -17,8 +21,8 @@ def index(request):
     reverse_geocode_result = gmaps.reverse_geocode((40.714224, -73.961452))
     # Request directions via public transit
     now = datetime.now()
-    directions_result = gmaps.directions("245 N 11th St, San Jose, CA 95112",
-                                     "711 2nd Ave, Salt Lake City, UT, 84103",
+    directions_result = gmaps.directions(starting_address,
+                                     ending_address,
                                      mode="driving",
                                      departure_time=now)
     print(now)
@@ -46,9 +50,9 @@ def enter_trip(request):
         # Request directions via public transit
         now = datetime.now()
         directions_result = gmaps.directions("245 N 11th St, San Jose, CA 95112",
-                                     "711 2nd Ave, Salt                                         Lake City, UT, 84103",
-                                     mode="driving",
-                                     departure_time=now)
+        "711 2nd Ave, Salt Lake City, UT, 84103",
+        mode="driving",
+        departure_time=now)
         context = {
             'directions_result': directions_result,
             'geocode_result': geocode_result,
@@ -61,11 +65,18 @@ def enter_trip(request):
         key = api_key['api_key']
         print request.POST
         starting_address = request.POST['starting_address']
+        request.session['starting_address'] = starting_address
+        session_starting_address = request.session['starting_address']
         ending_address = request.POST['ending_address']
+        request.session['ending_address'] = ending_address
+        session_ending_address = request.session['ending_address']
         trip = Trip.objects.create_trip(request.POST)
         gmaps = googlemaps.Client(key=key)
         # Geocoding an address
-        geocode_result = gmaps.geocode('1600 Amphitheatre Parkway, Mountain View, CA')
+        geocode_starting_address = gmaps.geocode(starting_address)
+        print("Starting Address Geocode: " + str(geocode_starting_address))
+        geocode_ending_address = gmaps.geocode(ending_address)
+        print("Ending Address Geocode: " + str(geocode_ending_address))
         # Look up an address with reverse geocoding
         reverse_geocode_result = gmaps.reverse_geocode((40.714224, -73.961452))
         # Request directions via public transit
@@ -75,17 +86,20 @@ def enter_trip(request):
         mode="driving",
         departure_time=now)
         context = {
+            'directions_result': directions_result,
             'ending_address': ending_address,
-            'geocode_result': geocode_result,
+            'geocode_starting_address': geocode_starting_address,
+            'geocode_ending_address': geocode_ending_address,
             'reverse_geocode_result': reverse_geocode_result,
             'gmaps': gmaps,
             'now': now,
             'starting_address': starting_address,
             'trip': trip,
         }
-        return render(request, 'google_maps_api/enter_trip.html', context)
+        return redirect("/", context)
+        # return render(request, 'google_maps_api/enter_trip.html', context)
 
-def new_trip(object):
+def new_trip(request):
     if request.method == 'POST':
         starting_address = request.POST['starting_address']
         request.session['starting_address'] = starting_address
