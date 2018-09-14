@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>New Trip</title>
+{% endblock%}
+
+
+{% block content %}
+<div class="container">
+    <h1>Google Maps API</h1>
+    <h2>Enter Your Trip Starting and Ending Address to get Directions</h2>
+    <div class="form-control">
+        <form method='POST' action="/new_trip">
+            {% csrf_token %}
+            <p>Starting Address:<input type="text" name="starting_address"></p>
+            <p>Ending Address:<input type="text" name="ending_address"></p>
+            <button type="submit" class="btn btn-primary">Submit</button>  
+            </div>
+        </form>
+        <br>
+    </div>
+</div>
+{% endblock %}
