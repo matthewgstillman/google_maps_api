@@ -6,13 +6,14 @@
 
 
 {% block content %}
+<a href="/enter_trip">Enter New Trip</a>
 <div class="container">
     <h1>Google Maps API</h1>
     <iframe
     width="600"
     height="450"
     frameborder="0" style="border:0"
-    src="https://www.google.com/maps/embed/v1/place?key={{key2}}&q={{starting_address}}" allowfullscreen>
+    src="https://www.google.com/maps/embed/v1/view?key={{key2}}&center={{lat_lon}}&zoom=18&maptype=satellite" allowfullscreen>
 </iframe>
     {% for directions in directions_result %}
     <h5>Trip Details</h5>

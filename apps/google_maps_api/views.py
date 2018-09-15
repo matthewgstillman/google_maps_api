@@ -9,6 +9,13 @@ from api_key import api_key
 # Create your views here.
 
 def index(request):
+    session_geocode_ending_address = request.session['geocode_ending_address']
+    print("Session Geocode Ending Address: " + str(session_geocode_ending_address))
+    latitude = session_geocode_ending_address[0]['geometry']['location']['lat']
+    print("Latitude: " + str(latitude))
+    longitude = session_geocode_ending_address[0]['geometry']['location']['lng']
+    print("Longtude: " + str(longitude))
+    lat_lon = str(latitude) + "," + str(longitude)
     key2 = api_key['api_key2']
     print("Key 2: " + str(key2))
     starting_address = request.session['starting_address']
@@ -34,12 +41,15 @@ def index(request):
     # print(reverse_geocode_result)
     context = {
         'starting_address': starting_address,
+        'ending_address': ending_address,
         'directions_result': directions_result,
         'geocode_result': geocode_result,
         'key2': key2,
+        'lat_lon': lat_lon,
         'gmaps': gmaps,
         'now': now,
         'reverse_geocode_result': reverse_geocode_result,
+        'session_geocode_ending_address': session_geocode_ending_address,
     }
     return render(request, 'google_maps_api/index.html', context)
 
@@ -100,9 +110,11 @@ def enter_trip(request):
         print("Starting Address Geocode: " + str(geocode_starting_address))
         geocode_ending_address = gmaps.geocode(ending_address)
         print("Ending Address Geocode: " + str(geocode_ending_address))
+        request.session['geocode_ending_address'] = geocode_ending_address
+        session_geocode_ending_address = request.session['geocode_ending_address']
+        print("Session Geocode Ending Address: " + str(session_geocode_ending_address))
         # Look up an address with reverse geocoding
         reverse_geocode_result = gmaps.reverse_geocode((40.714224, -73.961452))
-        # Request directions via public transit
         now = datetime.now()
         directions_result = gmaps.directions(starting_address,
         ending_address,
@@ -113,6 +125,7 @@ def enter_trip(request):
             'ending_address': ending_address,
             'session_formatted_starting_address': formatted_starting_address,
             'session_formatted_ending_address': formatted_ending_address,
+            'session_geocode_ending_address': session_geocode_ending_address,
             'geocode_starting_address': geocode_starting_address,
             'geocode_ending_address': geocode_ending_address,
             'reverse_geocode_result': reverse_geocode_result,
