@@ -33,6 +33,7 @@ def index(request):
     # print(gmaps)
     # print(reverse_geocode_result)
     context = {
+        'starting_address': starting_address,
         'directions_result': directions_result,
         'geocode_result': geocode_result,
         'key2': key2,
