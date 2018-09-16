@@ -8,12 +8,20 @@
 {% block content %}
 <a href="/enter_trip">Enter New Trip</a>
 <div class="container">
+    <h6>{{ session_formatted_starting_address }}<h6>
+    <h6>{{ session_formatted_ending_address }}<h6>
     <h1>Google Maps API</h1>
-    <iframe
+<iframe
     width="600"
     height="450"
     frameborder="0" style="border:0"
     src="https://www.google.com/maps/embed/v1/view?key={{key2}}&center={{lat_lon}}&zoom=18&maptype=satellite" allowfullscreen>
+</iframe>
+<iframe
+    width="600"
+    height="450"
+    frameborder="0" style="border:0"
+    src="https://www.google.com/maps/embed/v1/directions?key={{key2}}&origin={{session_formatted_starting_address}}&destination={{session_formatted_ending_address}}&avoid=tolls" allowfullscreen>
 </iframe>
     {% for directions in directions_result %}
     <h5>Trip Details</h5>

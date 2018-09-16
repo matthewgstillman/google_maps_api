@@ -9,12 +9,13 @@ from api_key import api_key
 # Create your views here.
 
 def index(request):
+    session_formatted_starting_address = request.session['formatted_starting_address']
+    session_formatted_ending_address = request.session['formatted_ending_address']
+    print("Formatted Ending Address: " + str(session_formatted_ending_address))
     session_geocode_ending_address = request.session['geocode_ending_address']
     print("Session Geocode Ending Address: " + str(session_geocode_ending_address))
     latitude = session_geocode_ending_address[0]['geometry']['location']['lat']
-    print("Latitude: " + str(latitude))
     longitude = session_geocode_ending_address[0]['geometry']['location']['lng']
-    print("Longtude: " + str(longitude))
     lat_lon = str(latitude) + "," + str(longitude)
     key2 = api_key['api_key2']
     print("Key 2: " + str(key2))
@@ -49,6 +50,8 @@ def index(request):
         'gmaps': gmaps,
         'now': now,
         'reverse_geocode_result': reverse_geocode_result,
+        'session_formatted_starting_address': session_formatted_starting_address,
+        'session_formatted_ending_address': session_formatted_ending_address,
         'session_geocode_ending_address': session_geocode_ending_address,
     }
     return render(request, 'google_maps_api/index.html', context)
@@ -94,15 +97,17 @@ def enter_trip(request):
         ending_address = request.POST['ending_address']
         request.session['ending_address'] = ending_address
         session_ending_address = request.session['ending_address']
+        print("Session Ending Address:\n " + str(session_ending_address) + "\n")
         formatted_ending_address = ""
         for i in session_ending_address:
             if i == " " or i == "  ":
-                formatted_starting_address += '%20'
+                formatted_ending_address += '%20'
             else:
-                formatted_starting_address += i
-        print("Formatted Ending Address: " + str(formatted_ending_address))
+                formatted_ending_address += i
+        print("Formatted Ending Address: \n" + str(formatted_ending_address) + str("\n"))
         request.session['formatted_ending_address'] = formatted_ending_address
         session_formatted_ending_address = request.session['formatted_ending_address']
+        print("Session Formatted Ending Address: " + str(session_formatted_ending_address))
         trip = Trip.objects.create_trip(request.POST)
         gmaps = googlemaps.Client(key=key)
         # Geocoding an address
@@ -122,9 +127,10 @@ def enter_trip(request):
         departure_time=now)
         context = {
             'directions_result': directions_result,
+            'formatted_ending_address': formatted_ending_address,
             'ending_address': ending_address,
-            'session_formatted_starting_address': formatted_starting_address,
-            'session_formatted_ending_address': formatted_ending_address,
+            'session_formatted_starting_address': session_formatted_starting_address,
+            'session_formatted_ending_address': session_formatted_ending_address,
             'session_geocode_ending_address': session_geocode_ending_address,
             'geocode_starting_address': geocode_starting_address,
             'geocode_ending_address': geocode_ending_address,
