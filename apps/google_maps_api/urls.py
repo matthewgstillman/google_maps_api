@@ -4,5 +4,4 @@ urlpatterns = [
     url(r'^$', views.index, name="index"),
     url(r'^enter_trip$', views.enter_trip, name="enter_trip"),
     url(r'^new_trip$', views.new_trip, name="new_trip"),
-    url(r'^trip_info$', views.trip_info, name="trip_info"),
 ]

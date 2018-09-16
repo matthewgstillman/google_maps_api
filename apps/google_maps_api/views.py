@@ -35,11 +35,6 @@ def index(request):
                                      ending_address,
                                      mode="driving",
                                      departure_time=now)
-    print(now)
-    print(directions_result)
-    # print(geocode_result)
-    # print(gmaps)
-    # print(reverse_geocode_result)
     context = {
         'starting_address': starting_address,
         'ending_address': ending_address,
@@ -141,7 +136,6 @@ def enter_trip(request):
             'trip': trip,
         }
         return redirect("/", context)
-        # return render(request, 'google_maps_api/enter_trip.html', context)
 
 def new_trip(request):
     if request.method == 'POST':
@@ -165,22 +159,3 @@ def new_trip(request):
         }
         return render(request, "google_maps_api/new_trip.ht,ml", context)
 
-def trip_info(request):
-    if request.method == 'POST':
-        form = TripForm(request.POST)
-        print request.POST
-        print form
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            # form = form['cleaned_data']
-            print form
-            # form.save()
-            return redirect('/')
-    else:
-        form = TripForm()
-        context = {
-            'form': form
-        }
-        return render(request, "google_maps_api/trip_info.html", context)
